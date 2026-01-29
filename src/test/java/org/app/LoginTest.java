@@ -4,10 +4,13 @@ import io.restassured.response.Response;
 import org.app.builder.LoginRequestBuilder;
 import org.app.client.LoginApiClient;
 import org.app.models.request.LoginRequest;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginTest {
 
-    @org.testng.annotations.Test
+    @Test
     void shouldLoginSuccessfully() {
 
         LoginRequest request =
@@ -17,6 +20,8 @@ public class LoginTest {
                 );
 
         Response response = LoginApiClient.login(request);
-        System.out.println(response);
+
+        assertThat(response.getStatusCode()).isEqualTo(200);
+        assertThat(response.jsonPath().getString("token")).isNotBlank();
     }
 }
