@@ -1,59 +1,49 @@
 package org.app.libs;
 
+import io.restassured.filter.Filter;
+import io.restassured.filter.FilterContext;
 import io.restassured.response.Response;
-import org.app.libs.store.ApiContext;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.InvocationInterceptor;
-import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
+import io.restassured.specification.FilterableRequestSpecification;
+import io.restassured.specification.FilterableResponseSpecification;
 
-import java.lang.reflect.Method;
+public class RetryOn5xxRes implements Filter {
+    private final int maxRetries;
+    private final long delay;
 
-public class RetryOn5xxRes implements InvocationInterceptor {
-    private static final int MAX_RETRIES = 2;
+    public RetryOn5xxRes(int maxRetries, long delay) {
+        this.maxRetries = maxRetries;
+        this.delay = delay;
+    }
+
+    public RetryOn5xxRes() {
+        this(3, 1000); // Default: 3 retries with 1 second delay
+    }
+
     @Override
-    public void interceptTestMethod(
-            Invocation<Void> invocation,
-            ReflectiveInvocationContext<Method> invocationContext,
-            ExtensionContext extensionContext)
-            throws Throwable {
-        int attempt = 0;
+    public Response filter(FilterableRequestSpecification requestSpec, FilterableResponseSpecification responseSpec,
+            FilterContext ctx) {
+        Response response = ctx.next(requestSpec, responseSpec);
+        int retryCount = 0;
 
-        while (attempt <= MAX_RETRIES) {
+        while (response != null && response.getStatusCode() >= 400 && retryCount < maxRetries) {
+            retryCount++;
+            System.out.println("[API Retry] Received " + response.getStatusCode() + " from " + requestSpec.getURI()
+                    + ". Retrying attempt " + retryCount + " after " + delay + "ms...");
 
             try {
-                invocation.proceed(); // execute test
-                return; // success
-
-            } catch (Throwable throwable) {
-
-                Response response =
-                        ApiContext.getResponse();
-
-                if (response == null) {
-                    throw throwable;
-                }
-
-                int status = response.getStatusCode();
-
-                if (status >= 500 ) {
-
-                    attempt++;
-
-                    System.out.println(
-                            "🔁 Retrying test → Attempt "
-                                    + attempt +
-                                    " Status: " + status
-                    );
-
-                    if (attempt > MAX_RETRIES) {
-                        throw throwable;
-                    }
-
-                } else {
-                    // Not server error → no retry
-                    throw throwable;
-                }
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
             }
+
+            response = ctx.next(requestSpec, responseSpec);
         }
+
+        if (response == null) {
+            System.out.println("[API Retry] Response was null after " + retryCount + " attempts.");
+        }
+
+        return response;
     }
 }

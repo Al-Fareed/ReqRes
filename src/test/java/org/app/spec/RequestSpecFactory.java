@@ -24,7 +24,7 @@ public class RequestSpecFactory {
                 .build();
     }
 
-    public static RequestSpecification goRestDefaultSpec(){
+    public static RequestSpecification goRestDefaultSpec() {
         return new RequestSpecBuilder()
                 .setBaseUri(BaseConfig.GO_REST_BASE_URL)
                 .setContentType(ContentType.JSON)

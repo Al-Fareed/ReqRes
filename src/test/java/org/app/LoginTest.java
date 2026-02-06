@@ -17,13 +17,11 @@ public class LoginTest extends BaseTest {
 
     @Test
     void shouldLoginSuccessfully() {
-
         LoginRequest request =
                 LoginRequestBuilder.loginWith(
                         "eve.holt@reqres.in",
                         "cityslicka"
                 );
-
         Response response = LoginApiClient.login(request);
 //        LoginResponse loginResponse = response.as(LoginResponse.class);
 //        System.out.println(loginResponse.getToken());
