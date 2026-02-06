@@ -23,4 +23,12 @@ public class RequestSpecFactory {
                 .addHeader("Sec-Fetch-Site", "same-origin")
                 .build();
     }
+
+    public static RequestSpecification goRestDefaultSpec(){
+        return new RequestSpecBuilder()
+                .setBaseUri(BaseConfig.GO_REST_BASE_URL)
+                .setContentType(ContentType.JSON)
+                .setAccept(ContentType.JSON)
+                .build();
+    }
 }
