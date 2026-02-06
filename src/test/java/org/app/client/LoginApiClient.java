@@ -4,6 +4,7 @@ import io.restassured.response.Response;
 import org.app.config.BaseConfig;
 import org.app.models.request.LoginRequest;
 import org.app.spec.RequestSpecFactory;
+import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 
