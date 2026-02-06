@@ -15,10 +15,10 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    // REST API testing
+    // RestAssured
     testImplementation 'io.rest-assured:rest-assured:5.4.0'
 
-    // JSON handling
+    // JSON (Jackson)
     testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
 
     // Assertions
@@ -30,8 +30,4 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    testLogging {
-        showStandardStreams = true
-        events "passed", "skipped", "failed"
-    }
 }
