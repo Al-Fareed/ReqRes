@@ -1,5 +1,6 @@
 package org.app.spec;
 
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
@@ -21,6 +22,7 @@ public class RequestSpecFactory {
                 .addHeader("Sec-Fetch-Dest", "empty")
                 .addHeader("Sec-Fetch-Mode", "cors")
                 .addHeader("Sec-Fetch-Site", "same-origin")
+                .addFilter(new AllureRestAssured())
                 .build();
     }
 
@@ -29,6 +31,7 @@ public class RequestSpecFactory {
                 .setBaseUri(BaseConfig.GO_REST_BASE_URL)
                 .setContentType(ContentType.JSON)
                 .setAccept(ContentType.JSON)
+                .addFilter(new AllureRestAssured())
                 .build();
     }
 }

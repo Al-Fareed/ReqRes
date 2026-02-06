@@ -1,11 +1,10 @@
 package org.app;
 
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import org.app.builder.LoginRequestBuilder;
 import org.app.client.LoginApiClient;
-import org.app.libs.listeners.ApiTestListener;
 import org.app.models.request.LoginRequest;
-import org.app.models.response.LoginResponse;
 import org.app.models.response.UsersResponse;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +15,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LoginTest extends BaseTest {
 
     @Test
+    @Epic("Req Res API login")
+    @Feature("Login")
+    @Story("User should be able to login")
+    @Description("Verify if the user is able to login")
     void shouldLoginSuccessfully() {
         LoginRequest request =
                 LoginRequestBuilder.loginWith(
@@ -32,6 +35,10 @@ public class LoginTest extends BaseTest {
     }
 
     @Test
+    @Epic("Go rest")
+    @Feature("Get Users")
+    @Story("Login")
+    @Description("Verify the get user api returns all the users")
     void getUsersTest() {
         Response users = LoginApiClient.getUsers();
         System.out.println(users.prettyPrint());
