@@ -18,21 +18,22 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.27.7'
 
     // Allure
-    testImplementation 'io.qameta.allure:allure-junit5:2.27.0'
-    testImplementation 'io.qameta.allure:allure-rest-assured:2.27.0'
+    testImplementation "io.qameta.allure:allure-junit5:2.24.0"
+    testImplementation "io.qameta.allure:allure-rest-assured:2.24.0"
 }
 
 test {
-    useJUnitPlatform {
+    useJUnitPlatform()
 
-        if (System.getProperty("groups") != null) {
-            includeTags System.getProperty("groups")
+    if (project.hasProperty("includeTags")) {
+        useJUnitPlatform {
+            includeTags project.property("includeTags") as String
         }
+    }
 
-        if (System.getProperty("excludeGroups") != null) {
-            excludeTags System.getProperty("excludeGroups")
+    if (project.hasProperty("excludeTags")) {
+        useJUnitPlatform {
+            excludeTags project.property("excludeTags") as String
         }
     }
 }
-
-
