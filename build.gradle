@@ -23,5 +23,16 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+
+        if (System.getProperty("groups") != null) {
+            includeTags System.getProperty("groups")
+        }
+
+        if (System.getProperty("excludeGroups") != null) {
+            excludeTags System.getProperty("excludeGroups")
+        }
+    }
 }
+
+

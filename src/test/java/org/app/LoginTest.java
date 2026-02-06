@@ -6,6 +6,7 @@ import org.app.builder.LoginRequestBuilder;
 import org.app.client.LoginApiClient;
 import org.app.models.request.LoginRequest;
 import org.app.models.response.UsersResponse;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class LoginTest extends BaseTest {
     @Feature("Login")
     @Story("User should be able to login")
     @Description("Verify if the user is able to login")
+    @Tag("Failure")
     void shouldLoginSuccessfully() {
         LoginRequest request =
                 LoginRequestBuilder.loginWith(
@@ -39,6 +41,7 @@ public class LoginTest extends BaseTest {
     @Feature("Get Users")
     @Story("Login")
     @Description("Verify the get user api returns all the users")
+    @Tag("smoke")
     void getUsersTest() {
         Response users = LoginApiClient.getUsers();
         System.out.println(users.prettyPrint());
