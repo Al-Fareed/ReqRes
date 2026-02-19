@@ -20,7 +20,7 @@ public class LoginApiClient {
         return response;
     }
 
-    public static Response getUsers(){
+    public static Response getUsers() {
         Response response = given()
                 .spec(RequestSpecFactory.goRestDefaultSpec())
                 .get(BaseConfig.GO_REST_GET_USERS);

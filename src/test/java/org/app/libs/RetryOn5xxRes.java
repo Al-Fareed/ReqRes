@@ -16,7 +16,7 @@ public class RetryOn5xxRes implements Filter {
     }
 
     public RetryOn5xxRes() {
-        this(3, 1000); // Default: 3 retries with 1 second delay
+        this(1, 1000); // Default: 3 retries with 1 second delay
     }
 
     @Override
@@ -25,7 +25,7 @@ public class RetryOn5xxRes implements Filter {
         Response response = ctx.next(requestSpec, responseSpec);
         int retryCount = 0;
 
-        while (response != null && response.getStatusCode() >= 400 && retryCount < maxRetries) {
+        while (response != null && response.getStatusCode() >= 500 && retryCount < maxRetries) {
             retryCount++;
             System.out.println("[API Retry] Received " + response.getStatusCode() + " from " + requestSpec.getURI()
                     + ". Retrying attempt " + retryCount + " after " + delay + "ms...");
